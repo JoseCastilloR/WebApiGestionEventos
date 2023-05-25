@@ -1,11 +1,37 @@
 {
   "Version": 1,
-  "Hash": "3USvNiA8jNLqMz1kliGxAWbi1DiKx6c76zwoXizfJMo=",
+  "Hash": "ldShXDfZXoegDfZW06Yug6Nrm9SswHw63wyYF1hkT04=",
   "Source": "WebApiGestionEventos",
   "BasePath": "_content/WebApiGestionEventos",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "WebApiGestionEventos\\wwwroot",
+      "Source": "WebApiGestionEventos",
+      "ContentRoot": "C:\\Users\\Jose Castillo\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\wwwroot\\",
+      "BasePath": "_content/WebApiGestionEventos",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Jose Castillo\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\wwwroot\\Archivo.txt",
+      "SourceId": "WebApiGestionEventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Jose Castillo\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\wwwroot\\",
+      "BasePath": "_content/WebApiGestionEventos",
+      "RelativePath": "Archivo.txt",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Archivo.txt"
+    }
+  ]
 }

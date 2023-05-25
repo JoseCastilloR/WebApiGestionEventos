@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebApiGestionEventos.Entidades;
 using WebApiGestionEventos.Validaciones;
 
-namespace WebApiGestionEventos.Entidades
+namespace WebApiGestionEventos.DTOs
 {
-    public class Evento: IValidatableObject
+    public class EventoCreacionDTO
     {
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(maximumLength: 120, ErrorMessage = "El campo {0} no debe de tener mas de {1} caracteres")]
         public string Nombre { get; set; }
@@ -30,24 +29,5 @@ namespace WebApiGestionEventos.Entidades
 
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int LugaresDisponibles { get; set; }
-
-        public List<EventoUsuario> EventosUsuarios { get; set; }
-
-        public int OrganizadorId { get; set; }
-
-        public Organizador Organizador { get; set; }
-
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            if (!string.IsNullOrEmpty(Nombre))
-            {
-                var primeraLetra = Nombre[0].ToString();
-
-                if(primeraLetra != primeraLetra.ToUpper())
-                {
-                    yield return new ValidationResult("La primera letra debe ser mayúscula", new string[] { nameof(Nombre) });
-                }
-            }
-        }
     }
 }

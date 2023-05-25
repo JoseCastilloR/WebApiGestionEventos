@@ -1,51 +1,102 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApiGestionEventos.DTOs;
 using WebApiGestionEventos.Entidades;
+using WebApiGestionEventos.Filtros;
 
 namespace WebApiGestionEventos.Controllers
 {
     [ApiController]
-    [Route("api/eventos")]
+    [Route("api/organizadores/{organizadorId:int}/eventos")]
     public class EventosController: ControllerBase
     {
         private readonly ApplicationDbContext context;
+        private readonly ILogger<EventosController> logger;
+        private readonly IMapper mapper;
 
-        public EventosController(ApplicationDbContext context)
+        public EventosController(ApplicationDbContext context, ILogger<EventosController> logger, IMapper mapper)
         {
             this.context = context;
+            this.logger = logger;
+            this.mapper = mapper;
         }
 
-        [HttpGet]
+        //[HttpGet]
         [HttpGet("listado")]
         [HttpGet("/listado-eventos")]
-        public async Task<ActionResult<List<Evento>>> Get()
+        [ServiceFilter(typeof(MiFiltroDeAccion))]
+        //[Authorize]
+        public async Task<List<EventoDTO>> Get()
         {
-           return await context.Eventos.ToListAsync();
+            logger.LogInformation("Estamos obteniendo los eventos");
+
+            //return await context.Eventos.ToListAsync();
+
+            var eventos = await context.Eventos.ToListAsync();
+
+            return mapper.Map<List<EventoDTO>>(eventos);
         }
 
-        [HttpGet("{nombre}")]
-        public async Task<ActionResult<Evento>> Get(string nombre)
-        {
-            var evento = await context.Eventos.FirstOrDefaultAsync(x => x.Nombre.Contains(nombre));
+        //[HttpGet("{id:int}")]
+        //public async Task<ActionResult<EventoDTO>> Get(int id)
+        //{
+        //    var evento = await context.Eventos.FirstOrDefaultAsync(eventoBD => eventoBD.Id == id);
+        //    return mapper.Map<EventoDTO>(evento);
+        //}
 
-            if (evento == null)
+        //[HttpGet("{nombre}")]
+        //[ResponseCache(Duration = 10)]
+        //public async Task<ActionResult<Evento>> Get(string nombre)
+        //{
+        //    var evento = await context.Eventos.FirstOrDefaultAsync(x => x.Nombre.Contains(nombre));
+
+        //    if (evento == null)
+        //    {
+        //        return NotFound("El nombre del evento no coincide con ningun registro.");
+        //    }
+
+        //    return evento;
+        //}
+
+        [HttpGet]
+        public async Task<ActionResult<List<EventoDTO>>> Get(int organizadorId)
+        {
+            var existeOrganizador = await context.Organizadores.AnyAsync(organizadorBD => organizadorBD.Id == organizadorId);
+
+            if (!existeOrganizador)
             {
-                return NotFound("El nombre del evento no coincide con ningun registro.");
+                return NotFound();
             }
 
-            return evento;
+            var eventos = await context.Eventos.Where(eventoBD => eventoBD.OrganizadorId == organizadorId).ToListAsync();
+
+            return mapper.Map<List<EventoDTO>>(eventos);
         }
+
+        //[HttpPost]
+        //public async Task<ActionResult> Post(EventoCreacionDTO eventoCreacionDTO)
+        //{
+        //    var evento = mapper.Map<Evento>(eventoCreacionDTO);
+
+        //    context.Add(evento);
+        //    await context.SaveChangesAsync();
+        //    return Ok();
+        //}
 
         [HttpPost]
-        public async Task<ActionResult> Post(Evento evento)
+        public async Task<ActionResult> Post(int organizadorId, EventoCreacionDTO eventoCreacionDTO)
         {
-            var existeEventoConMismoNombre = await context.Eventos.AnyAsync(x => x.Nombre == evento.Nombre);
+            var existeOrganizador = await context.Organizadores.AnyAsync(organizadorBD => organizadorBD.Id == organizadorId);
 
-            if (existeEventoConMismoNombre)
+            if (!existeOrganizador)
             {
-                return BadRequest($"Ya existe un evento con el nombre {evento.Nombre}");
+                return NotFound();
             }
 
+            var evento = mapper.Map<Evento>(eventoCreacionDTO);
+            evento.OrganizadorId = organizadorId;
             context.Add(evento);
             await context.SaveChangesAsync();
             return Ok();

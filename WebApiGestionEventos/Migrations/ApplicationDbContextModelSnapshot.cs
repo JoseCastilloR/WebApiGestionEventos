@@ -34,7 +34,9 @@ namespace WebApiGestionEventos.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Descripcion")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
 
                     b.Property<DateTime>("FechaHora")
                         .HasColumnType("datetime2");
@@ -43,12 +45,21 @@ namespace WebApiGestionEventos.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Nombre")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<int>("OrganizadorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Ubicacion")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrganizadorId");
 
                     b.ToTable("Eventos");
                 });
@@ -74,6 +85,23 @@ namespace WebApiGestionEventos.Migrations
                     b.ToTable("EventosUsuarios");
                 });
 
+            modelBuilder.Entity("WebApiGestionEventos.Entidades.Organizador", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Organizadores");
+                });
+
             modelBuilder.Entity("WebApiGestionEventos.Entidades.Usuario", b =>
                 {
                     b.Property<int>("Id")
@@ -83,11 +111,23 @@ namespace WebApiGestionEventos.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("WebApiGestionEventos.Entidades.Evento", b =>
+                {
+                    b.HasOne("WebApiGestionEventos.Entidades.Organizador", "Organizador")
+                        .WithMany("Eventos")
+                        .HasForeignKey("OrganizadorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organizador");
                 });
 
             modelBuilder.Entity("WebApiGestionEventos.Entidades.EventoUsuario", b =>
@@ -112,6 +152,11 @@ namespace WebApiGestionEventos.Migrations
             modelBuilder.Entity("WebApiGestionEventos.Entidades.Evento", b =>
                 {
                     b.Navigation("EventosUsuarios");
+                });
+
+            modelBuilder.Entity("WebApiGestionEventos.Entidades.Organizador", b =>
+                {
+                    b.Navigation("Eventos");
                 });
 
             modelBuilder.Entity("WebApiGestionEventos.Entidades.Usuario", b =>

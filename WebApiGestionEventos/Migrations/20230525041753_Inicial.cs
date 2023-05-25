@@ -12,21 +12,16 @@ namespace WebApiGestionEventos.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Eventos",
+                name: "Organizadores",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FechaHora = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Ubicacion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CapacidadMaxima = table.Column<int>(type: "int", nullable: false),
-                    LugaresDisponibles = table.Column<int>(type: "int", nullable: false)
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Eventos", x => x.Id);
+                    table.PrimaryKey("PK_Organizadores", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -35,11 +30,36 @@ namespace WebApiGestionEventos.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Eventos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
+                    FechaHora = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Ubicacion = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
+                    CapacidadMaxima = table.Column<int>(type: "int", nullable: false),
+                    LugaresDisponibles = table.Column<int>(type: "int", nullable: false),
+                    OrganizadorId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Eventos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Eventos_Organizadores_OrganizadorId",
+                        column: x => x.OrganizadorId,
+                        principalTable: "Organizadores",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,6 +89,11 @@ namespace WebApiGestionEventos.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Eventos_OrganizadorId",
+                table: "Eventos",
+                column: "OrganizadorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EventosUsuarios_UsuarioId",
                 table: "EventosUsuarios",
                 column: "UsuarioId");
@@ -85,6 +110,9 @@ namespace WebApiGestionEventos.Migrations
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
+
+            migrationBuilder.DropTable(
+                name: "Organizadores");
         }
     }
 }
