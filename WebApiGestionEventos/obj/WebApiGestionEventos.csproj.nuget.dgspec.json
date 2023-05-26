@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Jose Castillo\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\WebApiGestionEventos.csproj": {}
+    "C:\\Users\\Darkm\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\WebApiGestionEventos.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Jose Castillo\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\WebApiGestionEventos.csproj": {
+    "C:\\Users\\Darkm\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\WebApiGestionEventos.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Jose Castillo\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\WebApiGestionEventos.csproj",
+        "projectUniqueName": "C:\\Users\\Darkm\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\WebApiGestionEventos.csproj",
         "projectName": "WebApiGestionEventos",
-        "projectPath": "C:\\Users\\Jose Castillo\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\WebApiGestionEventos.csproj",
-        "packagesPath": "C:\\Users\\Jose Castillo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Jose Castillo\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\obj\\",
+        "projectPath": "C:\\Users\\Darkm\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\WebApiGestionEventos.csproj",
+        "packagesPath": "C:\\Users\\Darkm\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Darkm\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Jose Castillo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Darkm\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -47,6 +47,10 @@
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[6.0.16, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
@@ -82,7 +86,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

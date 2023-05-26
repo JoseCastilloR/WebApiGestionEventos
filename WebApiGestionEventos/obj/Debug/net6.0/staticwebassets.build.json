@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "ldShXDfZXoegDfZW06Yug6Nrm9SswHw63wyYF1hkT04=",
+  "Hash": "ykFnNU2ig7WolrLUHkha6slkJk7/7OnwURr8Zn409to=",
   "Source": "WebApiGestionEventos",
   "BasePath": "_content/WebApiGestionEventos",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "WebApiGestionEventos\\wwwroot",
       "Source": "WebApiGestionEventos",
-      "ContentRoot": "C:\\Users\\Jose Castillo\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Darkm\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\wwwroot\\",
       "BasePath": "_content/WebApiGestionEventos",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\Jose Castillo\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\wwwroot\\Archivo.txt",
+      "Identity": "C:\\Users\\Darkm\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\wwwroot\\Archivo.txt",
       "SourceId": "WebApiGestionEventos",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Jose Castillo\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Darkm\\source\\repos\\WebApiGestionEventos\\WebApiGestionEventos\\wwwroot\\",
       "BasePath": "_content/WebApiGestionEventos",
       "RelativePath": "Archivo.txt",
       "AssetKind": "All",
