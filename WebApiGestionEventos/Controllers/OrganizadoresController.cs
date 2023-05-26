@@ -26,7 +26,7 @@ namespace WebApiGestionEventos.Controllers
             return mapper.Map<List<OrganizadorDTO>>(organizadores);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name = "ObtenerOrganizador")]
         public async Task<ActionResult<OrganizadorDTO>> Get(int id)
         {
             var organizador = await context.Organizadores.Include(organizadorBD => organizadorBD.Eventos).FirstOrDefaultAsync(organizadorBD => organizadorBD.Id == id);
@@ -61,7 +61,10 @@ namespace WebApiGestionEventos.Controllers
 
             context.Add(organizador);
             await context.SaveChangesAsync();
-            return Ok();
+
+            var organizadorDTO = mapper.Map<OrganizadorDTO>(organizador);
+
+            return CreatedAtRoute("ObtenerOrganizador", new { id = organizador.Id }, organizadorDTO);
         }
 
         [HttpPut("{id:int}")]

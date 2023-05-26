@@ -32,17 +32,20 @@ namespace WebApiGestionEventos.Controllers
             return mapper.Map<List<UsuarioDTO>>(usuarios);
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<UsuarioDTO>> Get(int id)
+        [HttpGet("{id:int}", Name = "ObtenerUsuario")]
+        public async Task<ActionResult<UsuarioDTOConEventos>> Get(int id)
         {
-            var usuario = await context.Usuarios.FirstOrDefaultAsync(usuarioBD => usuarioBD.Id == id);
+            var usuario = await context.Usuarios
+                .Include(usuarioBD =>  usuarioBD.EventosUsuarios)
+                .ThenInclude(eventoUsuarioBD => eventoUsuarioBD.Evento)
+                .FirstOrDefaultAsync(usuarioBD => usuarioBD.Id == id);
 
             if (usuario == null)
             {
                 return NotFound("El usuario no fue existe");
             }
 
-            return mapper.Map<UsuarioDTO>(usuario);
+            return mapper.Map<UsuarioDTOConEventos>(usuario);
         }
 
         [HttpGet("{nombre}")]
@@ -53,42 +56,85 @@ namespace WebApiGestionEventos.Controllers
             return mapper.Map<List<UsuarioDTO>>(usuarios);
         }
 
+        //[HttpPost]
+        //public async Task<ActionResult> Post(UsuarioCreacionDTO usuarioCreacionDTO)
+        //{
+        //    var existeUsuarioConMismoNombre = await context.Usuarios.AnyAsync(x => x.Nombre == usuarioCreacionDTO.Nombre);
+
+        //    if (existeUsuarioConMismoNombre)
+        //    {
+        //        return BadRequest($"Ya existe un usuario con el nombre {usuarioCreacionDTO.Nombre}");
+        //    }
+
+        //    var usuario = mapper.Map<Usuario>(usuarioCreacionDTO);
+
+        //    context.Add(usuario);
+        //    await context.SaveChangesAsync();
+        //    return Ok();
+        //}
+
         [HttpPost]
         public async Task<ActionResult> Post(UsuarioCreacionDTO usuarioCreacionDTO)
         {
-            var existeUsuarioConMismoNombre = await context.Usuarios.AnyAsync(x => x.Nombre == usuarioCreacionDTO.Nombre);
+            var eventosIds = await context.Eventos
+                .Where(eventoBD => usuarioCreacionDTO.EventosIds.Contains(eventoBD.Id)).Select(x => x.Id).ToListAsync();
 
-            if (existeUsuarioConMismoNombre)
+            if (usuarioCreacionDTO.EventosIds.Count != eventosIds.Count)
             {
-                return BadRequest($"Ya existe un usuario con el nombre {usuarioCreacionDTO.Nombre}");
+                return BadRequest("No existe alguno de los eventos enviados.");
             }
 
             var usuario = mapper.Map<Usuario>(usuarioCreacionDTO);
-
             context.Add(usuario);
             await context.SaveChangesAsync();
-            return Ok();
+
+            var usuarioDTO = mapper.Map<UsuarioDTO>(usuario);
+
+            return CreatedAtRoute("ObtenerUsuario", new {id=usuario.Id}, usuarioDTO);
         }
 
+        //[HttpPut("{id:int}")]
+        //public async Task<ActionResult> Put(UsuarioCreacionDTO usuarioCreacionDTO, int id)
+        //{
+        //    var existe = await context.Usuarios.AnyAsync(x => x.Id == id);
+
+        //    if (!existe)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var eventosIds = await context.Eventos
+        //        .Where(eventoBD => usuarioCreacionDTO.EventosIds.Contains(eventoBD.Id)).Select(x => x.Id).ToListAsync();
+
+        //    if (usuarioCreacionDTO.EventosIds.Count != eventosIds.Count)
+        //    {
+        //        return BadRequest("No existe alguno de los eventos enviados.");
+        //    }
+
+        //    var usuario = mapper.Map<Usuario>(usuarioCreacionDTO);
+        //    usuario.Id = id;
+
+        //    context.Update(usuario);
+        //    await context.SaveChangesAsync();
+        //    return NoContent();
+        //}
+
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(Usuario usuario, int id)
+        public async Task<ActionResult> Put(int id, UsuarioCreacionDTO usuarioCreacionDTO)
         {
-            if (usuario.Id != id)
-            {
-                return BadRequest("El ID del usuario no coincide con el ID de la URL.");
-            }
+            var usuarioBD = await context.Usuarios
+                .Include(x => x.EventosUsuarios)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-            var existe = await context.Usuarios.AnyAsync(x => x.Id == id);
-
-            if (!existe)
+            if(usuarioBD == null)
             {
                 return NotFound();
             }
 
+            usuarioBD = mapper.Map(usuarioCreacionDTO, usuarioBD);
 
-            context.Update(usuario);
             await context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
 
         [HttpDelete("{id:int}")]

@@ -39,12 +39,18 @@ namespace WebApiGestionEventos.Controllers
             return mapper.Map<List<EventoDTO>>(eventos);
         }
 
-        //[HttpGet("{id:int}")]
-        //public async Task<ActionResult<EventoDTO>> Get(int id)
-        //{
-        //    var evento = await context.Eventos.FirstOrDefaultAsync(eventoBD => eventoBD.Id == id);
-        //    return mapper.Map<EventoDTO>(evento);
-        //}
+        [HttpGet("{id:int}", Name = "ObtenerEvento")]
+        public async Task<ActionResult<EventoDTO>> GetPorId(int id)
+        {
+            var evento = await context.Eventos.FirstOrDefaultAsync(eventoBD => eventoBD.Id == id);
+
+            if(evento == null)
+            {
+                return NotFound();
+            }
+
+            return mapper.Map<EventoDTO>(evento);
+        }
 
         //[HttpGet("{nombre}")]
         //[ResponseCache(Duration = 10)]
@@ -99,7 +105,10 @@ namespace WebApiGestionEventos.Controllers
             evento.OrganizadorId = organizadorId;
             context.Add(evento);
             await context.SaveChangesAsync();
-            return Ok();
+
+            var eventoDTO = mapper.Map<EventoDTO>(evento);
+
+            return CreatedAtRoute("ObtenerEvento", new {id= evento.Id, organizadorId = organizadorId}, eventoDTO);
         }
 
         [HttpPut("{id:int}")]
