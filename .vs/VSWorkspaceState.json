@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\WebApiGestionEventos"
+    "\\WebApiGestionEventos",
+    "\\WebApiGestionEventos\\Controllers",
+    "\\WebApiGestionEventos\\Servicios"
   ],
   "SelectedNode": "\\WebApiGestionEventos\\Startup.cs",
   "PreviewInSolutionExplorer": false
