@@ -5,11 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using WebApiGestionEventos.DTOs;
 using WebApiGestionEventos.Entidades;
 using WebApiGestionEventos.Filtros;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebApiGestionEventos.Controllers
 {
     [ApiController]
     [Route("api/organizadores/{organizadorId:int}/eventos")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class EventosController: ControllerBase
     {
         private readonly ApplicationDbContext context;
